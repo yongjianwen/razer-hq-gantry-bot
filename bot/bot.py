@@ -67,6 +67,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/toggle - toggle daily job\n\n"
         "You can also find them in the menu"
     )
+    await update.message.reply_text(
+        "Raise any issues @ <a href='https://github.com/yongjianwen/razer-hq-gantry-bot'>GitHub</a>\n"
+        "Use at your own risk",
+        parse_mode="HTML"
+    )
 
 
 async def set_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
