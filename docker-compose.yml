@@ -1,0 +1,20 @@
+services:
+  telegram-bot:
+    build: .
+    command: python -m bot.bot
+    env_file: .env
+    environment:
+      - TZ=Asia/Singapore
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  scheduler:
+    build: .
+    command: python -m bot.daily_job
+    env_file: .env
+    environment:
+      - TZ=Asia/Singapore
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

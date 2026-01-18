@@ -1,0 +1,15 @@
+# Ignore everything by default
+**
+
+# Allow bot package
+!bot/
+!bot/**
+
+# Allow db package
+!db/
+!db/**
+
+# Allow single root file
+!fill_form_razer_async.py
+!submit_photo_async.py
+!requirements.txt
