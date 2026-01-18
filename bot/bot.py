@@ -126,8 +126,9 @@ async def receive_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
                              (user.id,))
 
             await update.message.reply_text(
-                "✅ Daily automation enabled\n"
-                f"I will help you to submit the form every weekday between {START_JOB_HOUR}{START_JOB_MIN} ~ {END_JOB_HOUR}{END_JOB_MIN}!"
+                "✅ <b>Daily automation enabled</b>\n\n"
+                f"I will help you to submit the form every weekday between {START_JOB_HOUR}{START_JOB_MIN} ~ {END_JOB_HOUR}{END_JOB_MIN}!",
+                parse_mode="HTML"
             )
 
     return ConversationHandler.END
@@ -202,8 +203,9 @@ async def receive_face(update: Update, context: ContextTypes.DEFAULT_TYPE):
                              (user.id,))
 
             await update.message.reply_text(
-                "✅ Daily automation enabled\n"
-                f"I will help you to submit the form every weekday between {START_JOB_HOUR}{START_JOB_MIN} ~ {END_JOB_HOUR}{END_JOB_MIN}!"
+                "✅ <b>Daily automation enabled</b>\n\n"
+                f"I will help you to submit the form every weekday between {START_JOB_HOUR}{START_JOB_MIN} ~ {END_JOB_HOUR}{END_JOB_MIN}!",
+                parse_mode="HTML"
             )
 
     return ConversationHandler.END
