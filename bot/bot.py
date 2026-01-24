@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import os
 from functools import partial
 
@@ -332,7 +333,8 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("401: Unauthorized")
         return
 
-    message = " ".join(context.args)
+    # message = " ".join(context.args)
+    message = update.effective_message.text_html.strip("/announce")
 
     if not message:
         await update.message.reply_text("Usage: /announce <message>")
@@ -342,9 +344,14 @@ async def announce(update: Update, context: ContextTypes.DEFAULT_TYPE):
         rows = conn.execute("SELECT id FROM user").fetchall()
 
     for row in rows:
-        await context.bot.send_message(chat_id=row[0], text=message)
+        await context.bot.send_message(chat_id=row[0], text=message, parse_mode="HTML")
 
-    await update.message.reply_text("Ok")
+    await update.message.reply_text("✅ Announcement sent to all users")
+
+
+async def time(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    now = datetime.datetime.now().astimezone()
+    await update.message.reply_text(f"{now} {now.tzinfo}")
 
 
 def main():
@@ -389,6 +396,7 @@ def main():
     app.add_handler(CommandHandler("clear", clear))
     app.add_handler(CommandHandler("clear_all", clear_all))
     app.add_handler(CommandHandler("announce", announce))
+    app.add_handler(CommandHandler("time", time))
     app.add_handler(conv_handler)
 
     app.run_polling()

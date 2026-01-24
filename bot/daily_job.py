@@ -147,11 +147,13 @@ def start_daily_job():
         f"Max concurrent users: {MAX_CONCURRENT_USERS}\n"
         f"Early prep: {EARLY_PREP_JOB_HOUR}{EARLY_PREP_JOB_MIN}\n"
         f"Start: {START_JOB_HOUR}{START_JOB_MIN}\n"
-        f"End: {END_JOB_HOUR}{END_JOB_MIN}"
+        f"End: {END_JOB_HOUR}{END_JOB_MIN}\n"
+        f"Now: {datetime.datetime.now().astimezone()}\n"
+        f"Timezone: {datetime.datetime.now().astimezone().tzinfo}"
     )
 
     # Schedule the job daily at hh:mm:ss
-    schedule.every().day.at(f"{EARLY_PREP_JOB_HOUR}:{EARLY_PREP_JOB_MIN}:00").do(run_job)
+    schedule.every().day.at(f"{EARLY_PREP_JOB_HOUR}:{EARLY_PREP_JOB_MIN}:00", "Singapore").do(run_job)
 
     # run_job()
 
