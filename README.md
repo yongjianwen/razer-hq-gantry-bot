@@ -82,3 +82,20 @@ docker compose build --no-cache
 ```
 docker save -o razer-bot.tar razer-hq-auto-registration-telegram-bot
 ```
+
+## Deploying Container on Synology
+1. Upload the extracted docker image to anywhere on Synology, e.g. `/volume1/docker/razer-bot/docker-image/`
+2. Go to Container Manager > Image
+3. Click on Action > Import > Add From File > From this DSM
+4. Select the docker image uploaded
+5. After adding the image, click on Run, then select the inputs as follows:
+<p align="start"><img width="500" alt="image" src="https://github.com/user-attachments/assets/1c511428-78d3-46ab-a72b-19f2bcb2187b" /></p>
+
+6. Mount the volumes (create the path and upload the file, if not yet done):
+<p align="start"><img width="500" alt="image" src="https://github.com/user-attachments/assets/48187dc4-1bf6-4b9c-923e-e9d31f5b8acf" /></p>
+
+7. Enter the command:
+<p align="start"><img width="500" alt="image" src="https://github.com/user-attachments/assets/5e0540a8-8508-47ef-b319-43e712553ee0" /></p>
+
+8. Finish the creation process for the **Telegram Bot** component
+9. Repeat the same steps for the **Daily Job/Scheduler** component, by replacing the command with `python -m bot.daily_job`
