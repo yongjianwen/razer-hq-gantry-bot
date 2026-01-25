@@ -83,7 +83,9 @@ docker compose build --no-cache
 docker save -o razer-bot.tar razer-hq-auto-registration-telegram-bot
 ```
 
-## Deploying Container on Synology
+<br>
+
+### Deploying Container on Synology
 1. Upload the extracted docker image to anywhere on Synology, e.g. `/volume1/docker/razer-bot/docker-image/`
 2. Go to Container Manager > Image
 3. Click on Action > Import > Add From File > From this DSM
