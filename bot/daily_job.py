@@ -66,7 +66,7 @@ async def job():
             tasks.append(
                 asyncio.create_task(process_user(row, trigger_ts))
             )
-            logs.append(f"Name: {row[0]} scheduled at {datetime.datetime.fromtimestamp(trigger_ts).strftime('%H%M')}")
+            logs.append(f"Name: {row[0]} scheduled at {datetime.datetime.fromtimestamp(trigger_ts, tz=SG_TZ).strftime('%H%M')}")
 
     print("\n".join(logs))
 
