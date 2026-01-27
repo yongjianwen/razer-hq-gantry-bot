@@ -3,6 +3,7 @@ import datetime
 import os
 import random
 import time
+from zoneinfo import ZoneInfo
 
 import schedule
 from dotenv import load_dotenv
@@ -24,8 +25,10 @@ START_JOB_MIN = os.environ.get("START_JOB_MIN")
 END_JOB_HOUR = os.environ.get("END_JOB_HOUR")
 END_JOB_MIN = os.environ.get("END_JOB_MIN")
 ALL_DAYS = os.environ.get("ALL_DAYS")
+TIMEZONE = os.environ.get("TIMEZONE")
 
 semaphore = asyncio.Semaphore(int(MAX_CONCURRENT_USERS))
+SG_TZ = ZoneInfo(TIMEZONE)
 
 
 async def job():
@@ -75,15 +78,17 @@ async def job():
 
 # Assuming no midnight crossing
 def random_trigger_timestamp(start_hour, start_min, end_hour, end_min):
-    today = datetime.date.today()
+    today = datetime.datetime.now(SG_TZ).date()
 
     start_dt = datetime.datetime.combine(
         today,
-        datetime.time(int(start_hour), int(start_min))
+        datetime.time(int(start_hour), int(start_min)),
+        tzinfo=SG_TZ
     )
     end_dt = datetime.datetime.combine(
         today,
-        datetime.time(int(end_hour), int(end_min))
+        datetime.time(int(end_hour), int(end_min)),
+        tzinfo=SG_TZ
     )
 
     start_ts = start_dt.timestamp()
@@ -136,7 +141,7 @@ async def send_message(user_id, message, parse_mode=None):
 
 
 def run_job():
-    if (ALL_DAYS == "True") or datetime.datetime.today().weekday() < 5:
+    if (ALL_DAYS == "True") or datetime.datetime.now(SG_TZ).weekday() < 5:
         asyncio.run(job())
 
 
@@ -153,7 +158,7 @@ def start_daily_job():
     )
 
     # Schedule the job daily at hh:mm:ss
-    schedule.every().day.at(f"{EARLY_PREP_JOB_HOUR}:{EARLY_PREP_JOB_MIN}:00", "Singapore").do(run_job)
+    schedule.every().day.at(f"{EARLY_PREP_JOB_HOUR}:{EARLY_PREP_JOB_MIN}:00", TIMEZONE).do(run_job)
 
     # run_job()
 
