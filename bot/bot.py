@@ -29,6 +29,8 @@ START_JOB_HOUR = os.environ.get("START_JOB_HOUR")
 START_JOB_MIN = os.environ.get("START_JOB_MIN")
 END_JOB_HOUR = os.environ.get("END_JOB_HOUR")
 END_JOB_MIN = os.environ.get("END_JOB_MIN")
+WAIT_EMAIL_SECONDS = os.environ.get("WAIT_EMAIL_SECONDS")
+TO_SUBMIT_FACE = os.environ.get("TO_SUBMIT_FACE")
 
 # Constants
 WAITING_NAME, WAITING_FACE = range(2)
@@ -230,19 +232,25 @@ async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if row is None or not row[0] or not row[1]:
         await update.message.reply_text("Please set your name using /set_name")
-    elif not row[2]:
+    elif not row[2] and TO_SUBMIT_FACE == "True":
         await update.message.reply_text("Please set your face photo using /set_face")
     else:
         await update.message.reply_text(f"Submitting form for {row[0]}...")
         try:
             await fill_and_submit(row[0], row[1])
-            await asyncio.sleep(20)
+            await asyncio.sleep(int(WAIT_EMAIL_SECONDS))
             invitation_link = get_invitation_link(row[0])
-            await upload_photo(invitation_link, user.id)
-            await update.message.reply_text(
-                f"You can now use facial recognition at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
-                parse_mode="HTML"
-            )
+            can_use_face = await upload_photo(invitation_link, user.id)
+            if can_use_face:
+                await update.message.reply_text(
+                    f"You can now use facial recognition at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
+                    parse_mode="HTML"
+                )
+            else:
+                await update.message.reply_photo(
+                    photo=open(f"{DATA_PATH}/images/output/{user.id}_screenshot.png", "rb"),
+                    caption=f"You can now use QR code at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
+                )
         except Exception as e:
             await update.message.reply_text(f"❌ Error: {e}")
             print(f"❌ Error: {e}")
