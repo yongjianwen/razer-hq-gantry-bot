@@ -20,7 +20,7 @@ async def upload_photo(invitation_link: str, user_id: int) -> bool:
         page = await context.new_page()
         await page.goto(invitation_link, wait_until="networkidle")
 
-        await page.screenshot(path=f"{DATA_PATH}/images/output/{user_id}_screenshot.png", full_page=True)
+        # await page.screenshot(path=f"{DATA_PATH}/images/output/{user_id}_screenshot.png", full_page=True)
 
         if TO_SUBMIT_FACE == "True":
             try:
@@ -41,6 +41,8 @@ async def upload_photo(invitation_link: str, user_id: int) -> bool:
                 return True
             except:
                 return False
+        else:
+            return False
 
         # May cause ❌ Error: BrowserType.launch: Target page, context or browser has been closed problem
         # await browser.close()

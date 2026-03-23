@@ -247,9 +247,14 @@ async def generate(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     parse_mode="HTML"
                 )
             else:
-                await update.message.reply_photo(
-                    photo=open(f"{DATA_PATH}/images/output/{user.id}_screenshot.png", "rb"),
-                    caption=f"You can now use QR code at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
+                # await update.message.reply_photo(
+                #     photo=open(f"{DATA_PATH}/images/output/{user.id}_screenshot.png", "rb"),
+                #     caption=f"You can now use QR code at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
+                #     parse_mode="HTML"
+                # )
+                await update.message.reply_text(
+                    f"You can now use QR code at the gantry.\n{invitation_link}",
+                    parse_mode="HTML"
                 )
         except Exception as e:
             await update.message.reply_text(f"❌ Error: {e}")

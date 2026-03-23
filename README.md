@@ -80,7 +80,7 @@ docker compose build --no-cache
 ```
 2. Save/Extract the docker image to anywhere on your local machine:
 ```
-docker save -o razer-bot.tar razer-hq-auto-registration-telegram-bot
+docker save -o razer-bot.tar razer-bot:1.0
 ```
 
 <br>

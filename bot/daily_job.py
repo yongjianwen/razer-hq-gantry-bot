@@ -111,12 +111,19 @@ async def process_user(row, trigger_ts):
             await asyncio.sleep(int(WAIT_EMAIL_SECONDS))
             invitation_link = get_invitation_link(row[0])
             print(f"Invitation link for {row[0]}: {invitation_link}")
-            await upload_photo(invitation_link, row[3])
-            await send_message(
-                user_id=row[3],
-                message=f"You can now use facial recognition at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
-                parse_mode="HTML"
-            )
+            can_use_face = await upload_photo(invitation_link, row[3])
+            if can_use_face:
+                await send_message(
+                    user_id=row[3],
+                    message=f"You can now use facial recognition at the gantry. Alternatively, access your QR code <a href='{invitation_link}'>here</a>.",
+                    parse_mode="HTML"
+                )
+            else:
+                await send_message(
+                    user_id=row[3],
+                    message=f"You can now use QR code at the gantry.\n{invitation_link}",
+                    parse_mode="HTML"
+                )
 
             with get_conn() as conn:
                 conn.execute("""
